@@ -1,7 +1,7 @@
 import socket
 import cv2
-from img import imagem
-from protocol import enviar_mensagem, receber_mensagem
+from utils.img import imagem
+from utils.protocol import enviar_mensagem, receber_mensagem
 
 def iniciar_cliente():
     host, port = '127.0.0.1', 9000
