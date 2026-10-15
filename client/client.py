@@ -2,45 +2,45 @@ import socket
 import cv2
 from utils.img import imagem
 from utils.protocol import msgSend, msgRecv
+class client:
+    def __init__(self) -> None:
+        pass
+    def start():
+        host, port = '127.0.0.1', 9000
+        caminho_imagem = 'faces/image_0001.jpg' 
 
-def iniciar_cliente():
-    host, port = '127.0.0.1', 9000
-    caminho_imagem = 'faces/image_0001.jpg' 
-
-    img = imagem()
-    img.ler(caminho_imagem)
-    
-    if img.matriz is None:
-        print(f"Imagem {caminho_imagem} não encontrada!")
-        return
-
-    dados_imagem = img.codificar()
-
-    tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        tcp.connect((host, port))
-        print("Conectado! Enviando imagem...")
-        msgSend(tcp, dados_imagem)
-
-        print("Aguardando resposta do servidor...")
-        dados_resposta = msgRecv(tcp)
-
-        if not dados_resposta:
-            print("Nenhuma imagem recebida de resposta.")
+        img = imagem()
+        img.ler(caminho_imagem)
+        
+        if img.matriz is None:
+            print(f"Imagem {caminho_imagem} não encontrada!")
             return
 
-        img_resp = imagem()
-        img_resp.decodificar(dados_resposta)
-        
-        if img_resp.matriz is not None:
-            cv2.imshow('Imagem Processada', img_resp.matriz)
-            cv2.waitKey(0)
-            cv2.destroyAllWindows()
-            
-    except Exception as e:
-        print(f"Erro na execução do cliente: {e}")
-    finally:
-        tcp.close()
+        dados_imagem = img.codificar()
 
-if __name__ == "__main__":
-    iniciar_cliente()
+        tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            tcp.connect((host, port))
+            print("Conectado! Enviando imagem...")
+            msgSend(tcp, dados_imagem)
+
+            print("Aguardando resposta do servidor...")
+            dados_resposta = msgRecv(tcp)
+
+            if not dados_resposta:
+                print("Nenhuma imagem recebida de resposta.")
+                return
+
+            img_resp = imagem()
+            img_resp.decodificar(dados_resposta)
+            
+            if img_resp.matriz is not None:
+                cv2.imshow('Imagem Processada', img_resp.matriz)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+                
+        except Exception as e:
+            print(f"Erro na execução do cliente: {e}")
+        finally:
+            tcp.close()
+
