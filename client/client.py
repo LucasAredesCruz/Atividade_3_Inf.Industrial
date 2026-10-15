@@ -1,7 +1,7 @@
 import socket
 import cv2
 from utils.img import imagem
-from utils.protocol import enviar_mensagem, receber_mensagem
+from utils.protocol import msgSend, msgRecv
 
 def iniciar_cliente():
     host, port = '127.0.0.1', 9000
@@ -20,10 +20,10 @@ def iniciar_cliente():
     try:
         tcp.connect((host, port))
         print("Conectado! Enviando imagem...")
-        enviar_mensagem(tcp, dados_imagem)
+        msgSend(tcp, dados_imagem)
 
         print("Aguardando resposta do servidor...")
-        dados_resposta = receber_mensagem(tcp)
+        dados_resposta = msgRecv(tcp)
 
         if not dados_resposta:
             print("Nenhuma imagem recebida de resposta.")
